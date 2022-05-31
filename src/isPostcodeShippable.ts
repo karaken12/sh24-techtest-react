@@ -1,5 +1,7 @@
-const allowedPostcodes = ["SH241AA", "SH241AB"];
-const allowedLsoas = ["Southwark", "Lambeth"];
+import { config } from "./config";
+
+const allowedPostcodes = config.allowedPostcodes;
+const allowedLsoaPrefixes = config.allowedAreas.map((area) => `${area} `);
 
 export const isPostcodeShippable = async (postcode: string) => {
   const strippedPostcode = postcode.toUpperCase().replaceAll(/[^A-Z0-9]/g, "");
@@ -14,7 +16,7 @@ const postcodeIsOnAllowList = (strippedPostcode: string) =>
   allowedPostcodes.includes(strippedPostcode);
 
 const lsoaIsShippable = (lsoa: string) =>
-  allowedLsoas.some((allowedLsoa) => lsoa.startsWith(allowedLsoa + " "));
+  allowedLsoaPrefixes.some((allowedPrefix) => lsoa.startsWith(allowedPrefix));
 
 const getLsoaForPostcode = async (strippedPostcode: string) => {
   const url = `https://api.postcodes.io/postcodes/${strippedPostcode}`;
