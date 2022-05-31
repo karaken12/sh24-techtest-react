@@ -17,3 +17,9 @@ test("takes a York postcode and gives a negative result", async () => {
 
   expect(result).toBe(false);
 });
+
+test("takes an invalid postcode and gives a negative result", async () => {
+  const result = await isPostcodeShippable("invalid");
+
+  expect(result).toBe(false);
+});
