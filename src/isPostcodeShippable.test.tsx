@@ -29,3 +29,15 @@ test("takes a postcode in the allow-list and gives a positive result", async () 
 
   expect(result).toBe(true);
 });
+
+test("takes a shippable postcode with odd formatting and gives a positive result", async () => {
+  const result = await isPostcodeShippable(" s  E17 q      A\t");
+
+  expect(result).toBe(true);
+});
+
+test("takes a postcode on the allow-list with odd formatting and gives a positive result", async () => {
+  const result = await isPostcodeShippable(" s  H241      A\ta");
+
+  expect(result).toBe(true);
+});
