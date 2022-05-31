@@ -25,3 +25,14 @@ test("submitting the form keeps the value in the input", () => {
 
   expect(screen.getByLabelText(/postcode/i)).toHaveValue("SE1 7QD");
 });
+
+test("submitting the form shows a result", () => {
+  render(<App />);
+
+  const inputElement = screen.getByLabelText(/postcode/i);
+  userEvent.type(inputElement, "SE1 7QD");
+  const submitElement = screen.getByText(/check postcode/i);
+  userEvent.click(submitElement);
+
+  expect(screen.getByText(/Postcode: SE1 7QD/)).toBeInTheDocument();
+});
