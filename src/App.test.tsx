@@ -3,8 +3,17 @@ import { render, screen } from "@testing-library/react";
 import App from "./App";
 import userEvent from "@testing-library/user-event";
 
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+const testPostcodeShippable = async (postcode: string): Promise<boolean> => {
+  await sleep(500);
+  return postcode == "SE1 7QD";
+};
+
 test("renders a form with postcode input", () => {
-  render(<App />);
+  render(<App isPostcodeShippable={testPostcodeShippable} />);
 
   const inputElement = screen.getByLabelText(/postcode/i);
   expect(inputElement).toBeInTheDocument();
@@ -16,7 +25,7 @@ test("renders a form with postcode input", () => {
 });
 
 test("submitting the form keeps the value in the input", () => {
-  render(<App />);
+  render(<App isPostcodeShippable={testPostcodeShippable} />);
 
   const inputElement = screen.getByLabelText(/postcode/i);
   userEvent.type(inputElement, "SE1 7QD");
@@ -27,7 +36,7 @@ test("submitting the form keeps the value in the input", () => {
 });
 
 test("inputting a valid postcode gives a positive result", async () => {
-  render(<App />);
+  render(<App isPostcodeShippable={testPostcodeShippable} />);
 
   const inputElement = screen.getByLabelText(/postcode/i);
   userEvent.type(inputElement, "SE1 7QD");
@@ -40,7 +49,7 @@ test("inputting a valid postcode gives a positive result", async () => {
 });
 
 test("inputting an invalid postcode gives a negative result", async () => {
-  render(<App />);
+  render(<App isPostcodeShippable={testPostcodeShippable} />);
 
   const inputElement = screen.getByLabelText(/postcode/i);
   userEvent.type(inputElement, "YO10 5DD");
