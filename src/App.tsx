@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import "./App.css";
 
+const isPostcodeShippable = (postcode: string) => postcode == "SE1 7QD";
+
 interface PostcodeFormProps {
   handleSubmit: (postcode: string) => void;
 }
@@ -31,6 +33,17 @@ function PostcodeForm(props: PostcodeFormProps) {
   );
 }
 
+interface DisplayResultProps {
+  postcode: string;
+  shippable: boolean;
+}
+
+const DisplayResult = ({ postcode, shippable }: DisplayResultProps) => (
+  <div>
+    Postcode {postcode} is {shippable ? "shippable" : "not shippable"}
+  </div>
+);
+
 function App() {
   const [postcode, setPostcode] = useState("");
   const [shippable, setShippable] = useState(false);
@@ -40,16 +53,10 @@ function App() {
       <PostcodeForm
         handleSubmit={(postcode: string) => {
           setPostcode(postcode);
-          if (postcode == "SE1 7QD") {
-            setShippable(true);
-          } else {
-            setShippable(false);
-          }
+          setShippable(isPostcodeShippable(postcode));
         }}
       />
-      <div>
-        Postcode {postcode} is {shippable ? "shippable" : "not shippable"}
-      </div>
+      <DisplayResult postcode={postcode} shippable={shippable} />
     </div>
   );
 }
