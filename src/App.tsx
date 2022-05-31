@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 import "./App.css";
 
-const isPostcodeShippable = (postcode: string) => postcode == "SE1 7QD";
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+const isPostcodeShippable = async (postcode: string): Promise<boolean> => {
+  await sleep(500);
+  return postcode == "SE1 7QD";
+};
 
 interface PostcodeFormProps {
   handleSubmit: (postcode: string) => void;
@@ -47,16 +54,24 @@ const DisplayResult = ({ postcode, shippable }: DisplayResultProps) => (
 function App() {
   const [postcode, setPostcode] = useState("");
   const [shippable, setShippable] = useState(false);
+  const [waiting, setWaiting] = useState(false);
 
   return (
     <div className="App">
       <PostcodeForm
-        handleSubmit={(postcode: string) => {
+        handleSubmit={async (postcode: string) => {
           setPostcode(postcode);
-          setShippable(isPostcodeShippable(postcode));
+          setWaiting(true);
+          const isShippable = await isPostcodeShippable(postcode);
+          setShippable(isShippable);
+          setWaiting(false);
         }}
       />
-      <DisplayResult postcode={postcode} shippable={shippable} />
+      {waiting ? (
+        <div>Please wait</div>
+      ) : (
+        postcode && <DisplayResult postcode={postcode} shippable={shippable} />
+      )}
     </div>
   );
 }
