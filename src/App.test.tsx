@@ -34,5 +34,29 @@ test("submitting the form shows a result", () => {
   const submitElement = screen.getByText(/check postcode/i);
   userEvent.click(submitElement);
 
-  expect(screen.getByText(/Postcode: SE1 7QD/)).toBeInTheDocument();
+  expect(screen.getByText(/Postcode SE1 7QD/)).toBeInTheDocument();
+});
+
+test("inputting a valid postcode gives a positive result", () => {
+  render(<App />);
+
+  const inputElement = screen.getByLabelText(/postcode/i);
+  userEvent.type(inputElement, "SE1 7QD");
+  const submitElement = screen.getByText(/check postcode/i);
+  userEvent.click(submitElement);
+
+  expect(screen.getByText(/Postcode SE1 7QD is shippable/)).toBeInTheDocument();
+});
+
+test("inputting an invalid postcode gives a negative result", () => {
+  render(<App />);
+
+  const inputElement = screen.getByLabelText(/postcode/i);
+  userEvent.type(inputElement, "YO10 5DD");
+  const submitElement = screen.getByText(/check postcode/i);
+  userEvent.click(submitElement);
+
+  expect(
+    screen.getByText(/Postcode YO10 5DD is not shippable/)
+  ).toBeInTheDocument();
 });

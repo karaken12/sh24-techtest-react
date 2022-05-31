@@ -33,14 +33,23 @@ function PostcodeForm(props: PostcodeFormProps) {
 
 function App() {
   const [postcode, setPostcode] = useState("");
+  const [shippable, setShippable] = useState(false);
+
   return (
     <div className="App">
       <PostcodeForm
         handleSubmit={(postcode: string) => {
           setPostcode(postcode);
+          if (postcode == "SE1 7QD") {
+            setShippable(true);
+          } else {
+            setShippable(false);
+          }
         }}
       />
-      <div>Postcode: {postcode}</div>
+      <div>
+        Postcode {postcode} is {shippable ? "shippable" : "not shippable"}
+      </div>
     </div>
   );
 }
