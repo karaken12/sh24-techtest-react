@@ -25,11 +25,6 @@ You will also see any lint errors in the console.
 
 If you have Docker and Docker Compose installed you can run the tests and server in a Docker container instead.
 
-### Rebuilding the image
-
-If changes have been made to the code, the underlying image will need to be rebuilt.
-You can do this with `docker compose build`.
-
 ### Running tests
 
 You can run the tests using `docker compose run web npm test`.
@@ -39,3 +34,8 @@ You can run the tests using `docker compose run web npm test`.
 To start the app use `docker compose up`.
 This will start the container running in a window; to stop it press ctrl-C.
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+### Rebuilding the image
+
+This should no longer be necessary, as the local code is mounted as a Docker volume.
+If you do need to, you can do so with `docker compose build`.

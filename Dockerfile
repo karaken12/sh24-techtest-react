@@ -5,6 +5,7 @@ WORKDIR /usr/src/app
 # This is local and should not affect or be affected by those on the host machine
 COPY package*.json .
 RUN npm install
+RUN chown node ./node_modules
 
 # Copy files (except node_modules)
 COPY . .
