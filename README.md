@@ -1,6 +1,7 @@
 # SH:24 Full Stack Engineer Tech Test
 
 This is an implementation of the SH:24 Tech Test written in TypeScript and using React for rendering and flow.
+It was developed using Node installed locally, but has a Docker implementation that does not rely on having Node installed for convenience.
 
 ## Node environment
 
@@ -19,3 +20,22 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
+
+## Alternative Docker environment
+
+If you have Docker and Docker Compose installed you can run the tests and server in a Docker container instead.
+
+### Rebuilding the image
+
+If changes have been made to the code, the underlying image will need to be rebuilt.
+You can do this with `docker compose build`.
+
+### Running tests
+
+You can run the tests using `docker compose run web npm test`.
+
+### Running the app
+
+To start the app use `docker compose up`.
+This will start the container running in a window; to stop it press ctrl-C.
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
