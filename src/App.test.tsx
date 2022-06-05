@@ -3,6 +3,12 @@ import { render, screen } from "@testing-library/react";
 import App from "./App";
 import userEvent from "@testing-library/user-event";
 
+import { isPostcodeShippable } from "./isPostcodeShippable";
+jest.mock("./isPostcodeShippable");
+const mockIsPostcodeShippable = isPostcodeShippable as jest.MockedFunction<
+  typeof isPostcodeShippable
+>;
+
 function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -12,9 +18,13 @@ const testPostcodeShippable = async (postcode: string): Promise<boolean> => {
   return postcode == "SE1 7QD";
 };
 
-test("renders a form with postcode input", () => {
-  render(<App isPostcodeShippable={testPostcodeShippable} />);
+beforeEach(() => {
+  mockIsPostcodeShippable.mockImplementation(testPostcodeShippable);
 
+  render(<App isPostcodeShippable={isPostcodeShippable} />);
+});
+
+test("renders a form with postcode input", () => {
   const inputElement = screen.getByLabelText(/postcode/i);
   expect(inputElement).toBeInTheDocument();
   expect(inputElement).toHaveAttribute("type", "text");
@@ -25,8 +35,6 @@ test("renders a form with postcode input", () => {
 });
 
 test("submitting the form keeps the value in the input", () => {
-  render(<App isPostcodeShippable={testPostcodeShippable} />);
-
   const inputElement = screen.getByLabelText(/postcode/i);
   userEvent.type(inputElement, "SE1 7QD");
   const submitElement = screen.getByText(/check postcode/i);
@@ -36,8 +44,6 @@ test("submitting the form keeps the value in the input", () => {
 });
 
 test("inputting a valid postcode gives a positive result", async () => {
-  render(<App isPostcodeShippable={testPostcodeShippable} />);
-
   const inputElement = screen.getByLabelText(/postcode/i);
   userEvent.type(inputElement, "SE1 7QD");
   const submitElement = screen.getByText(/check postcode/i);
@@ -49,8 +55,6 @@ test("inputting a valid postcode gives a positive result", async () => {
 });
 
 test("inputting an invalid postcode gives a negative result", async () => {
-  render(<App isPostcodeShippable={testPostcodeShippable} />);
-
   const inputElement = screen.getByLabelText(/postcode/i);
   userEvent.type(inputElement, "YO10 5DD");
   const submitElement = screen.getByText(/check postcode/i);
