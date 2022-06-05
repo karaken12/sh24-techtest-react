@@ -20,8 +20,7 @@ const testPostcodeShippable = async (postcode: string): Promise<boolean> => {
 
 beforeEach(() => {
   mockIsPostcodeShippable.mockImplementation(testPostcodeShippable);
-
-  render(<App isPostcodeShippable={isPostcodeShippable} />);
+  render(<App />);
 });
 
 test("renders a form with postcode input", () => {

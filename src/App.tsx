@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import "./App.css";
+import { isPostcodeShippable } from "./isPostcodeShippable";
 
 interface PostcodeFormProps {
   handleSubmit: (postcode: string) => void;
 }
 
-function PostcodeForm(props: PostcodeFormProps) {
+const PostcodeForm = (props: PostcodeFormProps) => {
   const [postcode, setPostcode] = useState("");
 
   return (
@@ -29,7 +30,7 @@ function PostcodeForm(props: PostcodeFormProps) {
       <input type="submit" value="Check postcode" />
     </form>
   );
-}
+};
 
 interface DisplayResultProps {
   postcode: string;
@@ -42,11 +43,7 @@ const DisplayResult = ({ postcode, shippable }: DisplayResultProps) => (
   </div>
 );
 
-interface AppProps {
-  isPostcodeShippable: (postcode: string) => Promise<boolean>;
-}
-
-function App({ isPostcodeShippable }: AppProps) {
+const App = () => {
   const [postcode, setPostcode] = useState("");
   const [shippable, setShippable] = useState(false);
   const [waiting, setWaiting] = useState(false);
@@ -69,6 +66,6 @@ function App({ isPostcodeShippable }: AppProps) {
       )}
     </div>
   );
-}
+};
 
 export default App;
