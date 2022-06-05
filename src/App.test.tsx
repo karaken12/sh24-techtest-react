@@ -15,7 +15,7 @@ function sleep(ms: number) {
 
 const testPostcodeShippable = async (postcode: string): Promise<boolean> => {
   await sleep(500);
-  return postcode == "SE1 7QD";
+  return postcode == "abc123";
 };
 
 beforeEach(() => {
@@ -35,31 +35,31 @@ test("renders a form with postcode input", () => {
 
 test("submitting the form keeps the value in the input", () => {
   const inputElement = screen.getByLabelText(/postcode/i);
-  userEvent.type(inputElement, "SE1 7QD");
+  userEvent.type(inputElement, "def789");
   const submitElement = screen.getByText(/check postcode/i);
   userEvent.click(submitElement);
 
-  expect(screen.getByLabelText(/postcode/i)).toHaveValue("SE1 7QD");
+  expect(screen.getByLabelText(/postcode/i)).toHaveValue("def789");
 });
 
 test("inputting a valid postcode gives a positive result", async () => {
   const inputElement = screen.getByLabelText(/postcode/i);
-  userEvent.type(inputElement, "SE1 7QD");
+  userEvent.type(inputElement, "abc123");
   const submitElement = screen.getByText(/check postcode/i);
   userEvent.click(submitElement);
 
   expect(
-    await screen.findByText(/Postcode SE1 7QD is shippable/)
+    await screen.findByText(/Postcode abc123 is shippable/)
   ).toBeInTheDocument();
 });
 
 test("inputting an invalid postcode gives a negative result", async () => {
   const inputElement = screen.getByLabelText(/postcode/i);
-  userEvent.type(inputElement, "YO10 5DD");
+  userEvent.type(inputElement, "abc456");
   const submitElement = screen.getByText(/check postcode/i);
   userEvent.click(submitElement);
 
   expect(
-    await screen.findByText(/Postcode YO10 5DD is not shippable/)
+    await screen.findByText(/Postcode abc456 is not shippable/)
   ).toBeInTheDocument();
 });
